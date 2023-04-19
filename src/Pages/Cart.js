@@ -9,12 +9,13 @@ export const Cart = () => {
       <h3>Cart </h3>
       <h3>Item in Cart :{cart.length}</h3>
       {cart.map((item) => {
-        const { id, name, description, price } = item;
+        const { id, name, description, price, cartQuantity } = item;
         return (
           <div key={id}>
             <p>{name}</p>
             <p>{description}</p>
             <p>Price : {price}</p>
+            <p>{cartQuantity}</p>
             <button onClick={() => cartRemoveHandler(item)}>
               Remove From Cart
             </button>

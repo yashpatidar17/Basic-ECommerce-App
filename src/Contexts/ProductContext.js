@@ -21,11 +21,38 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   const cartHandler = (item) => {
-    setCart([...cart, item]);
+    const currProduct = cart.find((prod) => prod.id === item.id);
+    if (currProduct) {
+      const updatedCart = cart.map((prod) =>
+        prod.id === item.id
+          ? { ...prod, cartQuantity: prod.cartQuantity + 1 }
+          : prod
+      );
+      setCart(updatedCart);
+    } else {
+      setCart([...cart, { ...item, cartQuantity: 1 }]);
+    }
+
+    console.log(item.cartQuantity);
+    //setCart([...cart, item]);
   };
 
   const cartRemoveHandler = (item) => {
-    setCart((prev) => prev.filter((prod) => prod.id !== item.id));
+    const currProduct = cart.find((prod) => prod.id === item.id);
+    if (currProduct && currProduct.cartQuantity > 1) {
+      const updatedCart = cart.map((prod) =>
+        prod.id === item.id
+          ? { ...prod, cartQuantity: prod.cartQuantity - 1 }
+          : prod
+      );
+      setCart(updatedCart);
+    } else {
+      setCart((prev) => prev.filter((prod) => prod.id !== item.id));
+    }
+    // if(item.cartQuantity >1){
+    //   setCart({...item, item[cartQuantity]: item[cartQuantity]-1})
+    // }
+    //setCart((prev) => prev.filter((prod) => prod.id !== item.id));
   };
 
   const wishlistHandler = (item) => {
@@ -45,7 +72,7 @@ export const ProductProvider = ({ children }) => {
         cartHandler,
         cartRemoveHandler,
         wishlistHandler,
-        wishlistRemoveHandler
+        wishlistRemoveHandler,
       }}
     >
       {children}
